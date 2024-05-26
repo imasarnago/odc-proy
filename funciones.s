@@ -19,6 +19,8 @@ dibujar_pixel:
     STR W7, [X16]                        // Pone lo de la parte menos sign. del X7 (color, rojo), en X16
 RET
 
+
+
 /* La idea es que quiero dibujar un cuadrado. No solicitare 4 puntos, sino 2. Uno en la esquina opuesta
     del otro. Asi, los calculos de las otras esquinas es trivial. */
 
@@ -34,20 +36,20 @@ dibujarCuadrado:
     mov x2, x4               // Guardar Y1 en x2
     mov x8, x5               // Guardar X2 en x8
     mov x9, x6               // Guardar Y2 en x9
-    mov x10, x7              // Guardar color en x10
 
 bucleFila:
     cmp x2, x9               // Comparar Y1 con Y2
     bgt finCuadrado          // Si Y1 > Y2, terminar
 
-    mov x1, x3               // Reiniciar X1 para la nueva fila  (Me parece que esta linea esta de mas)
+    mov x1, x3               // Reiniciar X1 para la nueva fila
 bucleColumna:
     cmp x1, x8               // Comparar X1 con X2
     bgt siguienteFila        // Si X1 > X2, pasar a la siguiente fila
 
     // Pintar el píxel actual
-    mov x3, x10              // x3 = color
-    bl pintarPixel           // Llamar a pintarPixel
+    mov x10, x1              // Copiar X1 a x10
+    mov x11, x2              // Copiar Y1 a x11
+    bl dibujar_pixel         // Llamar a dibujar_pixel
 
     // Siguiente columna
     add x1, x1, #1           // X1++
@@ -57,16 +59,23 @@ siguienteFila:
     // Siguiente fila
     add x2, x2, #1           // Y1++
     b bucleFila              // Repetir para la siguiente fila
-RET
 
-// 
+finCuadrado:
+    ret
+
+/* // 
 // NOTE Set 2
 @ (300,282)   - OBJ1  (con esto uso 
 @ (303,275)   - OBJ1   4 registros)
 
 // NOTE Info 2
 @ 300,282,303,275 - 4 NUMEROS DISTINTOS
+
 // --- FINALIZA EL DIBUJO DEL CUADRADO
+
+ */
+
+
 
 
 .endif
