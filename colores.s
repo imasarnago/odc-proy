@@ -1,0 +1,3 @@
+.equ COLOR_FUEGO 0, 0xff5c42 
+//.equ COLOR_BOSQUE, 0x
+//.equ COLOR_PERSONAJE 0, 0x
