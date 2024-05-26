@@ -16,7 +16,7 @@ main:
 	// ---  FIN CAJA NEGRA      --- 
 
 
-    // ---  AQUI  ---			abyeurbgiuergbiueb				 // IMANOL CARROZZO
+    // ---  AQUI  ---				 // IMANOL CARROZZO
 
 
 
