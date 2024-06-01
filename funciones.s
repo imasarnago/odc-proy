@@ -4,11 +4,10 @@
 .include "framebuffer.s"
 
 
-// NOTE 
+             // --- HECHA POR IMANOL
 // (x,y) esta en la direccion:   Dirección de inicio + 4 * [x + (y * 640)]  <--- FORMULA DADA EN CLASE
 // fun dibujar_pixel(x,y,color) regs:(X1, X2, X7) desc: pixel en (x, y) del color color
 // x0 contiene la direccion base del framebuffer
-             // --- HECHA POR IMANOL
 dibujar_pixel:
     MOV X16, SCREEN_WIDTH                // X16 = SCREEN_WIDTH
     MUL X16, X2, X16                     // X16 = X2 * X16 = y * 640
@@ -20,62 +19,50 @@ dibujar_pixel:
 RET
 
 
+
+
              // --- HECHA POR IMANOL    
 /* La idea es que quiero dibujar un cuadrado. No solicitare 4 puntos, sino 2. Uno en la esquina opuesta
     del otro. Asi, los calculos de las otras esquinas es trivial. */
 
 // --- EMPIEZA EL DIBUJO DE UN CUADRADO
 // Parámetros:
-// X3 - Coordenada X1 (inferior izquierdo)
-// X4 - Coordenada Y1 (inferior izquierdo)
-// X5 - Coordenada X2 (superior derecho)
-// X6 - Coordenada Y2 (superior derecho)
+// X3 - Coordenada x1 (inferior izquierdo)
+// X4 - Coordenada y1 (inferior izquierdo)
+// X5 - Coordenada x2 (superior derecho)
+// X6 - Coordenada y2 (superior derecho)
 // X7 - Color (ARGB)
 dibujarCuadrado:
-    mov x1, x3               // Guardar X1 (registro) en x1 (coord. horizontal)
-    mov x2, x4               // Guardar Y1 (registro) en x2 (coord. vertical), etc...
-    mov x8, x5               // Guardar X2 en x8
-    mov x9, x6               // Guardar Y2 en x9
+    mov x24, x3              // Guardar x1 en X24 
+    mov x25, x4              // Guardar y1 en X25 
+    mov x26, x5              // Guardar x2 en X26
+    mov x27, x6              // Guardar y2 en X27
 
 bucleFila:
-    cmp x2, x9               // Comparar Y1 con Y2
-    bgt finCuadrado          // Si Y1 > Y2, terminar
+    cmp x25, x27             // Comparar Y1 con Y2
+    bgt finCuadrado          // Si Y1 > Y2, me pase en alto, entonces termine
 
-    mov x1, x3               // Reiniciar X1 par a la nueva fila
+    mov x1, x24              // Si aun estoy dentro del limite, reinicio x1 para la otra fila
+
 bucleColumna:
-    cmp x1, x8               // Comparar X1 con X2
-    bgt siguienteFila        // Si X1 > X2 pasa a la siguiente fila
+    cmp x1, x26              // Comparar X1 con X2
+    bgt siguienteFila        // Si X1 > X2, paso a la siguiente fila
 
     // Pintar el píxel actual
-    mov x10, x1              // Copiar X1 a x10
-    mov x11, x2              // Copiar Y1 a x11
-    bl dibujar_pixel         // Llamar a dibujar_pixel
+    mov x2, x25              // Poner y1 en X2 (coordenada y)
+    bl dibujar_pixel        // Si estoy en una posicion valida (dentro de los limites) pinto dicho pixel
 
     // Siguiente columna
-    add x1, x1, #1           // "X1++" 
-    b bucleColumna           // Repetir para la siguiente col.
+    add x1, x1, #1           // "x1++"
+    b bucleColumna          // Repito para el proximo pixel (a la derecha del anterior)
 
 siguienteFila:
     // Siguiente fila
-    add x2, x2, #1           // Y1++
-    b bucleFila              // Repetir para la siguiente fila
+    add x25, x25, #1         // "y1++"
+    b bucleFila              // Repetir para la siguiente fila (subo un escaloncito)
 
 finCuadrado:
     ret
-
-/* // 
-// NOTE Set 2
-@ (300,282)   - OBJ1  (con esto uso 
-@ (303,275)   - OBJ1   4 registros)
-
-// NOTE Info 2
-@ 300,282,303,275 - 4 NUMEROS DISTINTOS
-
-// --- FINALIZA EL DIBUJO DEL CUADRADO
-
- */
-
-
 
 
 .endif
