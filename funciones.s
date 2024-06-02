@@ -3,7 +3,6 @@
 
 .include "framebuffer.s"
 
-
              // --- HECHA POR IMANOL
 // (x,y) esta en la direccion:   Dirección de inicio + 4 * [x + (y * 640)]  <--- FORMULA DADA EN CLASE
 // fun dibujar_pixel(x,y,color) regs:(X1, X2, X7) desc: pixel en (x, y) del color color
@@ -31,11 +30,13 @@ RET
 
 dibujarCuadrado:
 
-    SUB SP, SP, #32       //32 BYTES. Espacio para cuatro regitros de 64 bits (8 bytes cada registro)
+    SUB SP, SP, #48       //48 BYTES. Espacio para cuatro regitros de 64 bits (8 bytes cada registro)
     STR X24, [SP, #0]    // Guardar X24 y X25. Del SP, movemelos a partir de donde indica el SP (8bytes cada uno)
-    STR X25, [SP,#8]
+    STR X25, [SP, #8]
     STR X26, [SP, #16]  // Guardar X26 y X27.
     STR X27, [SP, #24]
+    STR X7,  [SP, #32]  // Guardo color
+    STR X30, [SP, #40]
 
     MOV X24, X3              // Guardar x1 en X24
     MOV X25, X4              // Guardar y1 en X25
@@ -59,14 +60,14 @@ siguienteFila:
     B bucleFila              // Repetir para la siguiente fila (subo un escaloncito)
 
 finCuadrado:
-    // Restaurar registros guardados
-    LDR X24, [SP, #0]    // Restaurar X24 desde el stack
-    LDR X25, [SP,#8]     // Restaurar X25 desde el stack
+    // Restaurar registros modificados
+    LDR X24, [SP, #0]      // Restaurar X24 desde el stack
+    LDR X25, [SP, #8]     // Restaurar X25 desde el stack
     LDR X26, [SP, #16]   // Restaurar X26 desde el stack
-    LDR X27, [SP, #24]
-    ADD SP, SP, #32           // Liberar espacio en el stack 
+    LDR X27, [SP, #24]  // Restaurar X27 desde el stack
+    LDR X7,  [SP, #32]
+    LDR X30, [SP, #40]    
+    ADD SP, SP, #48           // Liberar espacio en el stack 
 RET
-
-
 
 .endif
