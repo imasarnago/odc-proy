@@ -19,50 +19,54 @@ dibujar_pixel:
 RET
 
 
-
-
              // --- HECHA POR IMANOL    
 /* La idea es que quiero dibujar un cuadrado. No solicitare 4 puntos, sino 2. Uno en la esquina opuesta
-    del otro. Asi, los calculos de las otras esquinas es trivial. */
-
-// --- EMPIEZA EL DIBUJO DE UN CUADRADO
+    del otro. Asi, los calculos de las otras esquinas son triviales. */
 // Parámetros:
 // X3 - Coordenada x1 (inferior izquierdo)
 // X4 - Coordenada y1 (inferior izquierdo)
 // X5 - Coordenada x2 (superior derecho)
 // X6 - Coordenada y2 (superior derecho)
 // X7 - Color (ARGB)
+
 dibujarCuadrado:
-    mov x24, x3              // Guardar x1 en X24 
-    mov x25, x4              // Guardar y1 en X25 
-    mov x26, x5              // Guardar x2 en X26
-    mov x27, x6              // Guardar y2 en X27
 
+    SUB SP, SP, #32       //32 BYTES. Espacio para cuatro regitros de 64 bits (8 bytes cada registro)
+    STR X24, [SP, #0]    // Guardar X24 y X25. Del SP, movemelos a partir de donde indica el SP (8bytes cada uno)
+    STR X25, [SP,#8]
+    STR X26, [SP, #16]  // Guardar X26 y X27.
+    STR X27, [SP, #24]
+
+    MOV X24, X3              // Guardar x1 en X24
+    MOV X25, X4              // Guardar y1 en X25
+    MOV X26, X5              // Guardar x2 en X26
+    MOV X27, X6              // Guardar y2 en X27
 bucleFila:
-    cmp x25, x27             // Comparar Y1 con Y2
-    bgt finCuadrado          // Si Y1 > Y2, me pase en alto, entonces termine
-
-    mov x1, x24              // Si aun estoy dentro del limite, reinicio x1 para la otra fila
-
+    CMP X25, X27             // Comparar Y1 con Y2
+    BGT finCuadrado          // Si Y1 > Y2, me pase en alto, entonces termine
+    MOV X1, X24              // // Poner x1 en X1 (coordenada x)
 bucleColumna:
-    cmp x1, x26              // Comparar X1 con X2
-    bgt siguienteFila        // Si X1 > X2, paso a la siguiente fila
-
+    CMP X1, X26              // Comparar X1 con X2
+    BGT siguienteFila        // Si X1 > X2, paso a la siguiente fila
     // Pintar el píxel actual
-    mov x2, x25              // Poner y1 en X2 (coordenada y)
-    bl dibujar_pixel        // Si estoy en una posicion valida (dentro de los limites) pinto dicho pixel
-
+    MOV X2, X25              // Poner y1 en X2 (coordenada y)
+    BL dibujar_pixel        // Si estoy en una posicion valida (dentro de los limites) pinto dicho pixel
     // Siguiente columna
-    add x1, x1, #1           // "x1++"
-    b bucleColumna          // Repito para el proximo pixel (a la derecha del anterior)
-
+    ADD X1, X1, #1           // "x1++"
+    B bucleColumna          // Repito para el proximo pixel (a la derecha del anterior)
 siguienteFila:
-    // Siguiente fila
-    add x25, x25, #1         // "y1++"
-    b bucleFila              // Repetir para la siguiente fila (subo un escaloncito)
+    ADD X25, X25, #1         // "y1++"
+    B bucleFila              // Repetir para la siguiente fila (subo un escaloncito)
 
 finCuadrado:
-    ret
+    // Restaurar registros guardados
+    LDR X24, [SP, #0]    // Restaurar X24 desde el stack
+    LDR X25, [SP,#8]     // Restaurar X25 desde el stack
+    LDR X26, [SP, #16]   // Restaurar X26 desde el stack
+    LDR X27, [SP, #24]
+    ADD SP, SP, #32           // Liberar espacio en el stack 
+RET
+
 
 
 .endif

@@ -18,11 +18,11 @@ main:
 
     // Coordenadas de las esquinas opuestas del cuadrado
     // Establecer las coordenadas del cuadrado y el color:
-    mov x3, #569              // x1 (esquina inferior izquierda)
-    mov x4, #172              // y1 (esquina inferior izquierda)
-    mov x5, #579              // x2 (esquina superior derecha)
-    mov x6, #165              // y2 (esquina superior derecha)
-    ldr x7, =COLOR_FUEGO_0    // color (cargar el color desde una dirección de memoria)
+    MOV X3, 569              // x1 (esquina inferior izquierda)
+    MOV X4, 172              // y1 (esquina inferior izquierda)
+    MOV X5, 579              // x2 (esquina superior derecha)
+    MOV X6, 165              // y2 (esquina superior derecha)
+    LDR X7, =COLOR_FUEGO_0    // color (cargar el color desde una dirección de memoria)
 
     BL dibujarCuadrado        // Llamar a la función dibujarCuadrado
 
@@ -31,6 +31,5 @@ main:
 
 	//---------------------------------------------------------------
 	// Infinite Loop
-
 InfLoop:
 	b InfLoop
