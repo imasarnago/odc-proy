@@ -1,4 +1,4 @@
-.ifndef funciones_s
+.ifndef FUNCIONES_S
 .equ FUNCIONES_S, 0x000000
 
 .include "framebuffer.s"
@@ -17,7 +17,6 @@ dibujar_pixel:
     STR W7, [X16]                        // Pone lo de la parte menos sign. del X7 (color, rojo), en X16
 RET
 
-
              // --- HECHA POR IMANOL    
 /* La idea es que quiero dibujar un cuadrado. No solicitare 4 puntos, sino 2. Uno en la esquina opuesta
     del otro. Asi, los calculos de las otras esquinas son triviales. */
@@ -29,14 +28,12 @@ RET
 // X7 - Color (ARGB)
 
 dibujarCuadrado:
-
-    SUB SP, SP, #48       //48 BYTES. Espacio para cuatro regitros de 64 bits (8 bytes cada registro)
+    SUB SP, SP, #40       //40 BYTES. Espacio para cuatro regitros de 64 bits (8 bytes cada registro)
     STR X24, [SP, #0]    // Guardar X24 y X25. Del SP, movemelos a partir de donde indica el SP (8bytes cada uno)
     STR X25, [SP, #8]
     STR X26, [SP, #16]  // Guardar X26 y X27.
     STR X27, [SP, #24]
-    STR X7,  [SP, #32]  // Guardo color
-    STR X30, [SP, #40]
+    STR X30, [SP, #32]
 
     MOV X24, X3              // Guardar x1 en X24
     MOV X25, X4              // Guardar y1 en X25
@@ -65,9 +62,8 @@ finCuadrado:
     LDR X25, [SP, #8]     // Restaurar X25 desde el stack
     LDR X26, [SP, #16]   // Restaurar X26 desde el stack
     LDR X27, [SP, #24]  // Restaurar X27 desde el stack
-    LDR X7,  [SP, #32]
-    LDR X30, [SP, #40]    
-    ADD SP, SP, #48           // Liberar espacio en el stack 
+    LDR X30, [SP, #32]    
+    ADD SP, SP, #40           // Liberar espacio en el stack 
 RET
 
 .endif
