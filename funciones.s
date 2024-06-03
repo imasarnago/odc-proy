@@ -58,12 +58,12 @@ siguienteFila:
 
 finCuadrado:
     // Restaurar registros modificados
-    LDR X24, [SP, #0]      // Restaurar X24 desde el stack
-    LDR X25, [SP, #8]     // Restaurar X25 desde el stack
-    LDR X26, [SP, #16]   // Restaurar X26 desde el stack
-    LDR X27, [SP, #24]  // Restaurar X27 desde el stack
-    LDR X30, [SP, #32]    
-    ADD SP, SP, #40           // Liberar espacio en el stack 
+    LDR X24, [SP, #0]                    // Restaurar X24
+    LDR X25, [SP, #8]                    // Restaurar X25
+    LDR X26, [SP, #16]                   // Restaurar X26
+    LDR X27, [SP, #24]                   // Restaurar X27
+    LDR X30, [SP, #32]                   // Restaurar X30 (LR)
+    ADD SP, SP, #40                      // Liberar espacio en el stack
 RET
 
 .endif

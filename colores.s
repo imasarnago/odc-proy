@@ -1,3 +1,3 @@
 .equ COLOR_FUEGO_0, 0xff5c42 
-//.equ COLOR_BOSQUE, 0x
-//.equ COLOR_PERSONAJE 0, 0x
+.equ COLOR_ARBOL, 0x6e324d
+.equ COLOR_COPA, 0x67674b
