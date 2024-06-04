@@ -15,6 +15,17 @@ main:
 	BL dibujar_pixel                             // IMANOL CARROZZO */
 
 
+// PINTO EL FONDO DEL BOSQUE A CONTINUACION
+mov x3, 0
+mov x4, 0
+mov x5, SCREEN_WIDTH
+mov x6, SCREEN_HEIGHT
+LDR x7, =COLOR_CIELO
+BL dibujarCuadrado
+
+
+
+
     // ---  AQUI DIBUJO CUADRADO (CHISPA) ---				 // IMANOL CARROZZO
 
     // Coordenadas de las esquinas opuestas del cuadrado
@@ -67,7 +78,7 @@ main:
     MOV X6, 129 
     LDR X7, =COLOR_COPA    
     BL dibujarCuadrado  
-
+// DETALLES:
 	MOV X3, 465  
     MOV X4, 24  
     MOV X5, 484 
@@ -98,11 +109,6 @@ main:
     LDR X7, =COLOR_PASTO    
     BL dibujarCuadrado    
   
-
-
-
-
-
 
 
 
