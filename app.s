@@ -49,12 +49,36 @@ main:
 
 			// AQUI DIBUJO EL TRONCO
 
-	MOV X3, 589        
-    MOV X4, 117              
-    MOV X5, 619              
-    MOV X6, 132              
+	MOV X3, 569  
+    MOV X4, 127   
+    MOV X5, 619 
+    MOV X6, 298 
     LDR X7, =COLOR_ARBOL    
-    BL dibujarCuadrado        
+    BL dibujarCuadrado      
+ 
+	MOV X3, 0  
+    MOV X4, 298   
+    MOV X5, 639 
+    MOV X6, 479 
+    LDR X7, =COLOR_PASTO    
+    BL dibujarCuadrado    
+            // DEJO DE DIBUJAR EL TRONCO DEL ARBOL
+
+            // EMPIEZO A DIBUJAR LA COPA DEL ARBOL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	//---------------------------------------------------------------
 	// Infinite Loop
