@@ -50,9 +50,9 @@ main:
 			// AQUI DIBUJO EL TRONCO
 
 	MOV X3, 589        
-    MOV X4, 127              
+    MOV X4, 117              
     MOV X5, 619              
-    MOV X6, 142              
+    MOV X6, 132              
     LDR X7, =COLOR_ARBOL    
     BL dibujarCuadrado        
 
