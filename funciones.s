@@ -77,4 +77,59 @@ RET
 
 
 
+paint_circle:
+    sub sp,sp,#48                   // mem alloc
+
+    str lr,[sp]                     // push to sp
+    str x8,[sp,#8]                  // push to sp
+    str x9,[sp,#16]                 // push to sp
+    str x1,[sp,#24]                 // push to sp 
+    str x2,[sp,#32]                 // push to sp
+    str x0,[sp,#40]                 // push to sp 
+
+    movz x8,0                       // init a 0
+    movz x9,0                       // init a 0
+    mov x0,x23
+
+    mov x2, SCREEN_HEIGHT            // Y Size
+loop1_crc:  
+	mov x1, SCREEN_WIDTH            // X Size
+loop0_crc:
+    sub x8,x5,x2                    // dist en Y al centro
+    sub x9,x6,x1                    // dist en X al centro
+    mul x8,x8,x8                    // a^2 -- distancia en Y al cuadrado
+    mul x9,x9,x9                    // b^2 -- distancia en X al cuadrado
+    add x9,x9,x8                    // a^2 + b^2 -- suma del cuadrado de las distancias
+    cmp x9,x7                       // comparo distancias con radio
+    b.hi cont_crc                   // si a^2 + b^2 > r^2 => (a,b) ∉  a la imagen
+	stur w10,[x0]				    // Colorear el pixel N
+cont_crc:   
+    add x0,x0,4                     // Siguiente pixel
+	sub x1,x1,1                     // Decrementar contador X
+	cbnz x1,loop0_crc               // Si no terminó la fila, salto
+	sub x2,x2,1                     // Decrementar contador Y
+	cbnz x2,loop1_crc               // Si no es la última fila, salto  
+
+    ldr lr,[sp]                     // pop from sp
+    ldr x8,[sp,#8]                  // pop from sp
+    ldr x9,[sp,#16]                 // pop from sp
+    ldr x1,[sp,#24]                 // pop from sp 
+    ldr x2,[sp,#32]                 // pop from sp
+    ldr x0,[sp,#40]                 // pop from sp 
+
+    add sp,sp,#48                   // free mem
+    ret
+
+
+
+
+
+
+
+
+
+
+
+
+
 .endif
