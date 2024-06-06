@@ -351,16 +351,6 @@ BL dibujarCuadrado
 
 
 
-
-MOV X8,  100
-MOV X9, 120
-LDR X10, =FUEGO		
-BL paint_circle
-
-
-
-
-
 	//---------------------------------------------------------------
 	// Infinite Loop
 InfLoop:
