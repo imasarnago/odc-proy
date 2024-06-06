@@ -71,6 +71,157 @@ RET
 
 
 
+// Subrutina para dibujar una línea entre (X1, Y1) y (X2, Y2)
+dibujar_linea:
+loop1:
+    // Compara si hemos llegado al punto final
+    CMP X18, X20
+    BEQ end_line
+    CMP X19, X21
+    BEQ end_line
+
+    // Dibuja el pixel
+    MOV X1, X18
+    MOV X2, X19
+    BL dibujar_pixel
+
+    // Incrementa X e Y según sea necesario
+    CMP X18, X20
+    BLT sumoX
+    CMP X19, X21
+    BLT sumoY
+
+sumoX:
+    ADD X18, X18, #1
+    B loop1
+sumoY:
+    ADD X19, X19, #1
+    B loop1
+
+end_line:
+    RET
+
+
+
+
+
+
+
+            // TRIANGULO IZQUIERDO
+
+
+
+
+// Función para dibujar un triángulo rectángulo
+// Entradas:
+// x0 - Dirección base del framebuffer
+// x1 - Coordenada x del vértice
+// x2 - Coordenada y del vértice
+// x3 - Base del triángulo
+// x4 - Altura del triángulo
+draw_triangleder:
+    mov x5, 0            // Inicializar el contador de la altura
+    mov x9, SCREEN_WIDTH // Cargar el ancho de la pantalla en x9
+
+
+
+
+movz w18, #0x6300          // Parte baja del color (G y B)
+movk w18, #0x2300, lsl 16  // Parte baja del color (R)
+
+
+
+
+
+
+
+
+draw_triangle_loop_heightder:
+    cmp x5, x4           // Comparar el contador de la altura con la altura del triángulo
+    bge end_draw_triangleder // Si hemos alcanzado la altura, salir de la función
+
+    mov x6, 0            // Inicializar el contador de la base
+draw_triangle_loop_widthder:
+    cmp x6, x5           // Comparar el contador de la base con el contador de la altura
+    bgt end_draw_triangle_widthder // Si hemos alcanzado el contador de la altura, salir del bucle de ancho
+
+    // Calcular la posición del píxel en el framebuffer
+    add x7, x1, x6       // x7 = x1 + x6
+    add x8, x2, x5       // x8 = x2 + x5
+    mul x8, x8, x9       // x8 = (x2 + x5) * SCREEN_WIDTH
+    add x7, x7, x8       // x7 = (x1 + x6) + (x2 + x5) * SCREEN_WIDTH
+    lsl x7, x7, 2        // x7 = ((x1 + x6) + (x2 + x5) * SCREEN_WIDTH) * 4
+
+    // Dibujar el píxel
+    str w18, [x0, x7]
+
+    add x6, x6, 1        // Incrementar el contador de la base
+    b draw_triangle_loop_widthder
+
+end_draw_triangle_widthder:
+    add x5, x5, 1        // Incrementar el contador de la altura
+    b draw_triangle_loop_heightder
+
+end_draw_triangleder:
+    ret
+
+
+            // TRIANGULO DERECHO
+
+
+
+draw_triangleizq:
+    mov x5, 0            // Inicializar el contador de la altura
+    mov x9, SCREEN_WIDTH // Cargar el ancho de la pantalla en x9
+
+
+
+
+movz w18, #0x6300          // Parte baja del color (G y B)
+movk w18, #0x2300, lsl 16  // Parte baja del color (R)
+
+
+
+
+
+
+draw_triangle_loop_heightizq:
+    cmp x5, x4           // Comparar el contador de la altura con la altura del triángulo
+    bge end_draw_triangleizq // Si hemos alcanzado la altura, salir de la función
+
+    mov x6, 0            // Inicializar el contador de la base
+draw_triangle_loop_widthizq:
+    cmp x6, x5           // Comparar el contador de la base con el contador de la altura
+    bgt end_draw_triangle_widthizq // Si hemos alcanzado el contador de la altura, salir del bucle de ancho
+
+    // Calcular la posición del píxel en el framebuffer
+    sub x7, x1, x6       // x7 = x1 - x6
+    add x8, x2, x5       // x8 = x2 + x5
+    mul x8, x8, x9       // x8 = (x2 + x5) * SCREEN_WIDTH
+    add x7, x7, x8       // x7 = (x1 - x6) + (x2 + x5) * SCREEN_WIDTH
+    lsl x7, x7, 2        // x7 = ((x1 - x6) + (x2 + x5) * SCREEN_WIDTH) * 4
+
+    // Dibujar el píxel
+    str w18, [x0, x7]
+
+    add x6, x6, 1        // Incrementar el contador de la base
+    b draw_triangle_loop_widthizq
+
+end_draw_triangle_widthizq:
+    add x5, x5, 1        // Incrementar el contador de la altura
+    b draw_triangle_loop_heightizq
+
+end_draw_triangleizq:
+    ret
+
+
+
+
+
+
+
+
+
 
 
 .endif
